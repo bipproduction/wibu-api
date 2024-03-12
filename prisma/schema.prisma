@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  password     String
+  phone        String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
+  ApiKey       ApiKey[]
+  Config       Config[]
+  ApikeyConfig ApikeyConfig[]
+  UserRole     UserRole?      @relation(fields: [userRoleId], references: [id])
+  userRoleId   String?        @default("USER")
+}
+
+model UserRole {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  User        User[]
+}
+
+model ApiKey {
+  id           String         @id @default(cuid())
+  name         String
+  key          String         @unique
+  description  String?
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+  isActive     Boolean        @default(true)
+  expiresAt    DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
+  ApikeyConfig ApikeyConfig[]
+}
+
+model Config {
+  id           String         @id @default(cuid())
+  name         String
+  description  String?
+  value        Json           @default("{}")
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
+  ApikeyConfig ApikeyConfig[]
+  user         User?          @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+model ApikeyConfig {
+  // id        String   @id @default(cuid())
+  config    Config?  @relation(fields: [configId], references: [id])
+  apiKey    ApiKey?  @relation(fields: [apiKeyId], references: [id])
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  configId  String
+  apiKeyId  String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@id([configId, apiKeyId])
+}

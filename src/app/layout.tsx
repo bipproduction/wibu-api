@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import React from "react";
+import './simple.css'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,13 +12,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css" /> */}
+        {/* <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"></link> */}
+      </head>
+      <body className={inter.className}>
+        {children}
+      </body>
+
     </html>
   );
 }
