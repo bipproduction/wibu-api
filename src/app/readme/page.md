@@ -20,12 +20,7 @@
 
 ### Response
 ```json
-{
-  "name": "apaya",
-  "key": "U2FsdGVkX1/vfDIbWqzWTfP1Mbph23M/HMuvyAd7fWw=",
-  "isActive": true,
-  "expiresAt": null,
-  "ApikeyConfig": [
+[
     {
       "config": {
         "name": "dsdsds",
@@ -36,5 +31,4 @@
       }
     }
   ]
-}
 ```
